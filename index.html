@@ -1,0 +1,57 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Page</title>
+  <link rel="stylesheet" 
+href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        This is the demo for JCB
+      </div>
+      <div class="card-body">
+        <!-- Button to load the chart -->
+        <button onclick="loadChart()" class="btn btn-primary">Load 
+Chart</button>
+        <!-- Div to contain the chart -->
+        <div id="chart"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Include Plotly.js library -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script>
+    // Function to load and plot the chart
+    function loadChart() {
+      // Fetch data from the '/data' endpoint
+      fetch('/data')
+        .then(response => response.json())  // Parse the response as JSON
+        .then(data => {
+          // Extract 'a' and 'b' values from the data
+          const aValues = data.map(entry => entry.a);
+          const bValues = data.map(entry => entry.b);
+          // Define the trace for the scatter plot
+          const trace = {
+            x: aValues,  // Values of column 'a' on the X-axis
+            y: bValues,  // Values of column 'b' on the Y-axis
+            mode: 'markers',  // Scatter plot mode
+            type: 'scatter'   // Type of plot
+          };
+          // Define layout options for the plot
+          const layout = {
+            title: 'Demo Plot',           // Title of the plot
+            xaxis: { title: 'Column a' },  // Label for X-axis
+            yaxis: { title: 'Column b' }   // Label for Y-axis
+          };
+          // Create a new plot with the provided trace and layout
+          Plotly.newPlot('chart', [trace], layout);
+        });
+    }
+  </script>
+</body>
+</html>
+
